@@ -127,9 +127,9 @@ def trap_integ(wv, fluxv):
         else:
             integ[i] = integ[i + 1] + traparea
 
-    nanobarn = 1.e+40
+    pbtofb = 1000.0
 
-    return wmin, integ  # * nanobarn
+    return wmin, integ   *  pbtofb                         ########  Hamzeh :     pb to fb
 
 
 
@@ -184,7 +184,7 @@ plt.subplots_adjust(left=0.15, right=0.95, bottom=0.12, top=0.95)
 
 
 ax.set_xlim(200.0, 1000.0)
-ax.set_ylim(1.e-6, 3.e-4)
+ax.set_ylim(1.e-3, 3.e-1)
 
 
 
@@ -200,7 +200,7 @@ ax.loglog(wv_inel_trap_II, int_inel_II, label=r"$M_N < 100$ GeV ($Q^2_p < 10^5$ 
 
 # Add labels and legend
 ax.set_xlabel(r"$W_0$ [GeV]")
-ax.set_ylabel(r"$\sigma_{{\rm ep}\to {\rm e}(\gamma\gamma \to ZZ){\rm p}^{(\ast)}}$ (W > W$_0$) [pb]")
+ax.set_ylabel(r"$\sigma_{{\rm ep}\to {\rm e}(\gamma\gamma \to ZZ){\rm p}^{(\ast)}}$ (W > W$_0$) [fb]")
 ax.legend(title=r"$Q^2_e < 10^5$ GeV$^2$", loc="upper right")
 
 
