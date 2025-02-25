@@ -1,6 +1,6 @@
-# The `integrated_t_tbar_cross_section` function computes the integrated tau-tau production cross-section 
+# The `integrated_t_tbar_cross_section` function computes the integrated t-tbar production cross-section 
 # for a given threshold energy `W0` and electron/proton beam energies `eEbeam` and `pEbeam`.
-#   - It defines an integrand combining tau-tau cross-section and the interpolated S_yy.
+#   - It defines an integrand combining t-tbar cross-section and the interpolated S_yy.
 #   - If S_yy is zero at a given W, it skips that W value to avoid unnecessary computations.
 #   - The result is integrated over W from W0 up to the maximum value set by `sqrt(s_cms)`.
 #   - Integration warnings are caught, ensuring stable results.
@@ -16,10 +16,10 @@ from scipy.interpolate import interp1d
 
 
 # Load photon luminosity data from the text file
-#data = np.loadtxt('Elastic_Photon_Luminosity_Spectrum_q2emax_100000_q2pmax_10_using_vegas_FCC_he.txt', comments='#')
+data = np.loadtxt('Elastic_Photon_Luminosity_Spectrum_q2emax_10_q2pmax_10_using_vegas.txt', comments='#')
 #data = np.loadtxt('Inelastic_Photon_Luminosity_Spectrum_MNmax_10_q2emax_100000_q2pmax_10_using_vegas_FCC_he.txt', comments='#')
 #data = np.loadtxt('Inelastic_Photon_Luminosity_Spectrum_MNmax_50_q2emax_100000_q2pmax_1000_using_vegas_FCC_he.txt', comments='#')
-data = np.loadtxt('Inelastic_Photon_Luminosity_Spectrum_MNmax_300_q2emax_100000_q2pmax_100000_using_vegas_FCC_he.txt', comments='#')
+#data = np.loadtxt('Inelastic_Photon_Luminosity_Spectrum_MNmax_300_q2emax_100000_q2pmax_100000_using_vegas_FCC_he.txt', comments='#')
 
 W_data = data[:, 0]
 S_yy_data = data[:, 1]
@@ -29,7 +29,7 @@ S_yy_data = data[:, 1]
 S_yy_interp = interp1d(W_data, S_yy_data, kind='linear', bounds_error=False, fill_value=0.0)
 
 
-# Tau-Tau Production Cross-Section Calculation at Given W
+# t-tbar Production Cross-Section Calculation at Given W
 def cs_ttbar_w_condition_Hamzeh(wvalue):  # Eq.62 of Physics Reports 364 (2002) 359-450
     mtop = 172.50
     Qf = 2.0/3.0
@@ -41,19 +41,19 @@ def cs_ttbar_w_condition_Hamzeh(wvalue):  # Eq.62 of Physics Reports 364 (2002) 
     beta = np.sqrt(np.where(1.0 - 4.0 * mtop * mtop / wvalue**2.0 >= 0.0, 1.0 - 4.0 * mtop * mtop / wvalue**2.0, np.nan))
 
     # Element-wise calculation of cs using np.where
-    cs = np.where(wvalue > mtop, ( 4.0 * np.pi * alpha2 * Qf**4.0 * Nc * hbarc2 ) / wvalue**2.0 * (beta) * \
+    cs = np.where(wvalue > 2*mtop, ( 4.0 * np.pi * alpha2 * Qf**4.0 * Nc * hbarc2 ) / wvalue**2.0 * (beta) * \
              ( (3.0 - (beta**4.0))/(2.0 * beta) * np.log((1.0 + beta)/(1.0 - beta)) - 2.0 + beta**2.0 ), 0.0) * 1e9
 
     return cs
 
 
 
-# Integrated Tau-Tau Production Cross-Section from W_0 to sqrt(s_cms)
+# Integrated t-tbar Production Cross-Section from W_0 to sqrt(s_cms)
 def integrated_t_tbar_cross_section(W0, eEbeam, pEbeam):
     s_cms = 4.0 * eEbeam * pEbeam  # Center-of-mass energy squared
 
     def integrand(W):
-        # Get the tau-tau cross-section and S_yy value
+        # Get the t-tbar cross-section and S_yy value
         t_tbar_cross_section = cs_ttbar_w_condition_Hamzeh(W)
         S_yy_value = S_yy_interp(W)
 
@@ -80,8 +80,8 @@ def integrated_t_tbar_cross_section(W0, eEbeam, pEbeam):
 
 
 # Parameters
-eEbeam = 60.0  # Electron beam energy in GeV
-pEbeam = 50000.0  # Proton beam energy in GeV
+eEbeam = 50.0  # Electron beam energy in GeV
+pEbeam = 7000.0  # Proton beam energy in GeV
 mtop = 172.50  # Top quark mass in GeV
 W0_value = 2*mtop  # GeV
 
