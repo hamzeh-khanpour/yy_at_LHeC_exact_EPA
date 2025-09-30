@@ -19,7 +19,7 @@ from scipy.interpolate import interp1d
 #data = np.loadtxt('Elastic_Photon_Luminosity_Spectrum_q2emax_100000_q2pmax_10_using_vegas_FCC_he.txt', comments='#')
 #data = np.loadtxt('Inelastic_Photon_Luminosity_Spectrum_MNmax_10_q2emax_100000_q2pmax_10_using_vegas_FCC_he.txt', comments='#')
 #data = np.loadtxt('Inelastic_Photon_Luminosity_Spectrum_MNmax_50_q2emax_100000_q2pmax_1000_using_vegas_FCC_he.txt', comments='#')
-data = np.loadtxt('Elastic_Photon_Luminosity_Spectrum_q2emax_100_q2pmax_100_using_vegas.txt', comments='#')
+data = np.loadtxt('Elastic_Photon_Luminosity_Spectrum_q2emax_1_q2pmax_1_using_vegas.txt', comments='#')
 
 W_data = data[:, 0]
 S_yy_data = data[:, 1]
